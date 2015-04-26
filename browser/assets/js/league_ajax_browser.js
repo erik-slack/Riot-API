@@ -143,6 +143,11 @@ function buildTable(content_array, callback){
 	callback();
 }
 
+function triggerFail(message){
+	$("#output").html('<h2 style="color: #FFB3B3; text-shadow: 1px 1px #130707;">' + message + '</h2>');
+	
+}
+
 ////////////////////////////////////////////////////////////////////////
 ////////														////////
 ///////////													 ///////////
@@ -157,9 +162,7 @@ function getSummonerStatsSummary(callback, id){
 		var data = jQuery.parseJSON(API_Response.responseText);
 		callback(data);
 	})
-	.fail(function() {
-		alert( "error" );
-	})
+	.fail(triggerFail())
 }
 
 // This function makes 2 separate calls to the Riot API resulting in the game statistics of the player
@@ -169,9 +172,13 @@ function searchSummonerStatsSummary(){
 	// // uses the function getSummonerStats as parameter.
 	getSummonerID(function(id){
 		getSummonerStatsSummary(function(stats){
-			console.log(stats);
+			//console.log(stats);
 			var stats_array = stats['playerStatSummaries'];
-			buildTable(stats_array, doNothing);
+			if (stats_array){
+				buildTable(stats_array, doNothing);
+			} else {
+				triggerFail('Summoner not found or not enough information exists yet.');
+			}
 		}, id);
 	});
 }
@@ -191,8 +198,8 @@ function getSummonerStatsRanked(callback, id){
 		var data = jQuery.parseJSON(API_Response.responseText);
 		callback(data);
 	})
-	.fail(function() {
-		alert( "error" );
+	.fail(function(){
+		triggerFail("Summoner not found or ranked statistics for it do not exist.");
 	})
 }
 
@@ -207,7 +214,12 @@ function searchSummonerStatsRanked(){
 			var stats_array = stats['champions'];
 			stats_array.sort();
 			stats_array.reverse();
-			buildTable(stats_array, getChampionIDs);
+			if (stats_array){
+				buildTable(stats_array, getChampionIDs);
+			} else {
+				triggerFail("Summoner not found or ranked statistics for it do not exist.");
+			}
+			
 		}, id);
 	});
 }
