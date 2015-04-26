@@ -108,11 +108,8 @@ function buildTable(content_array, callback){
 		$('#stats thead tr').append('<th id="">' + i + '</th>');
 	}
 	content_array.forEach(function (element, index) {
-		//console.log(element);
-		//console.log(index);
 		Object.keys(element).forEach(function (sub_element, sub_index) {
 		    var sub_el = element[sub_element];
-		    //console.log(sub_el);
 		    if(typeof sub_el == 'object'){
 		    	var cell_count = 0;
 		    	$('#stats tbody').append('<tr class="latest-row"></tr>');
@@ -208,6 +205,8 @@ function searchSummonerStatsRanked(){
 		getSummonerStatsRanked(function(stats){
 			console.log(stats);
 			var stats_array = stats['champions'];
+			stats_array.sort();
+			stats_array.reverse();
 			buildTable(stats_array, getChampionIDs);
 		}, id);
 	});
@@ -248,9 +247,10 @@ function insertChampionName(old_text, champ_id){
 	//console.log('champ_id = ' + champ_id);
 	getChampionName(function(name){
 		console.log(name);
+		name = '<strong>' + name + '</strong>';
 		var content = $('#stats').html();
 		content = content.replace(old_text, name);
-		content = content.replace('id: 0', 'All Ranked Champs');
+		content = content.replace('id: 0', '<strong>All Ranked Champs</strong>');
 		$('#stats').html(content);
 	}, champ_id);
 }
