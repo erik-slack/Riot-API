@@ -144,8 +144,11 @@ function buildTable(content_array, callback){
 }
 
 function triggerFail(message){
+	if(message == undefined){
+		message = "Error retrieving information.";
+	}
+
 	$("#output").html('<h2 style="color: #FFB3B3; text-shadow: 1px 1px #130707;">' + message + '</h2>');
-	
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -162,7 +165,7 @@ function getSummonerStatsSummary(callback, id){
 		var data = jQuery.parseJSON(API_Response.responseText);
 		callback(data);
 	})
-	.fail(triggerFail())
+	.fail(triggerFail)
 }
 
 // This function makes 2 separate calls to the Riot API resulting in the game statistics of the player
@@ -258,7 +261,7 @@ function cleanChampionID(raw_id_text){
 function insertChampionName(old_text, champ_id){ 
 	//console.log('champ_id = ' + champ_id);
 	getChampionName(function(name){
-		console.log(name);
+		//console.log(name);
 		name = '<strong>' + name + '</strong>';
 		var content = $('#stats').html();
 		content = content.replace(old_text, name);
