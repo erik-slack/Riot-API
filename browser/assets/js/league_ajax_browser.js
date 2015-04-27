@@ -21,9 +21,14 @@ $(function(){
 /////////////											   /////////////
 ////////////////										////////////////
 ////////////////////////////////////////////////////////////////////////
+function getAPIKey(){
+	return $('#api-key-input').val();
+}
+
 function validateInput(){
-	var empty_checker = $('#summoner-name-input');
-  	if (!isEmpty(empty_checker)){
+	var api_key_input = $('#api-key-input');
+	var search_input = $('#summoner-name-input');
+  	if (!isEmpty(search_input) && !isEmpty(api_key_input)){
 		var selected = getSelectedOption();
 		//alert(empty_checker + ' | ' + selected);
 		if (selected == 'summary'){
@@ -93,7 +98,7 @@ function getSummonerID(callback){
 	var name = getSummonerName();
 	var summonerID = 'Not Found';
 
-	var API_Response = $.get( 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + name + '?api_key=ed241854-6f2a-4bb1-a63e-f163ef31e362', function() {
+	var API_Response = $.get( 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + name + '?api_key=' + getAPIKey(), function() {
 		var data = jQuery.parseJSON(API_Response.responseText);
 		summonerID = data[name].id;
 
@@ -161,7 +166,7 @@ function triggerFail(message){
 
 // This function fetches the stats of the summoner by submitting that person's summoner name (in-game-name)
 function getSummonerStatsSummary(callback, id){
-	var API_Response = $.get('https://na.api.pvp.net/api/lol/na/v1.3/stats/by-summoner/' + id + '/summary?api_key=ed241854-6f2a-4bb1-a63e-f163ef31e362', function() {
+	var API_Response = $.get('https://na.api.pvp.net/api/lol/na/v1.3/stats/by-summoner/' + id + '/summary?api_key=' + getAPIKey(), function() {
 		var data = jQuery.parseJSON(API_Response.responseText);
 		callback(data);
 	})
@@ -197,7 +202,7 @@ function searchSummonerStatsSummary(){
 
 // This function fetches the stats of the summoner by submitting that person's summoner name (in-game-name)
 function getSummonerStatsRanked(callback, id){
-	var API_Response = $.get('https://na.api.pvp.net/api/lol/na/v1.3/stats/by-summoner/' + id + '/ranked?api_key=ed241854-6f2a-4bb1-a63e-f163ef31e362', function() {
+	var API_Response = $.get('https://na.api.pvp.net/api/lol/na/v1.3/stats/by-summoner/' + id + '/ranked?api_key=' + getAPIKey(), function() {
 		var data = jQuery.parseJSON(API_Response.responseText);
 		callback(data);
 	})
@@ -272,7 +277,7 @@ function insertChampionName(old_text, champ_id){
 
 // This function makes an api call to get static data containing champion names by giving the server a champion ID
 function getChampionName(callback, id){
-	var API_Response = $.get('https://na.api.pvp.net/api/lol/static-data/na/v1.2/champion/' + id + '?api_key=ed241854-6f2a-4bb1-a63e-f163ef31e362', function() {
+	var API_Response = $.get('https://na.api.pvp.net/api/lol/static-data/na/v1.2/champion/' + id + '?api_key=' + getAPIKey(), function() {
 		var data = jQuery.parseJSON(API_Response.responseText);
 		var name = data.name;
 		callback(name);
