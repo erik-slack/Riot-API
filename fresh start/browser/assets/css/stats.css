@@ -1,0 +1,27 @@
+body {
+	/*background: #333333 url('../img/bg.jpg') no-repeat fixed;*/
+	background-color: #666;
+	background-size: 100%;
+}
+
+#stats {
+	background-color: rgba(0, 0, 102, 0.23);
+	color: white;
+}
+
+#page-title {
+	color: #fff;
+	text-shadow: 2px 4px #333;
+}
+
+.inner-cell {
+	background-color: rgba(0, 0, 102, 0.53);
+}
+
+.outer-cell {
+	background-color: rgba(0, 0, 102, 0.83);
+}
+
+.radio-inline {
+	color: #fff;
+}
