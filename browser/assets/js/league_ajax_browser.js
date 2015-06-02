@@ -1,6 +1,24 @@
 ////////////////////////////////////////////////////////////////////////
 ////////														////////
 ///////////													 ///////////
+////////////				 	Constants   	 			////////////
+/////////////											   /////////////
+////////////////										////////////////
+////////////////////////////////////////////////////////////////////////
+var BASE_URL = 'https://na.api.pvp.net/api/lol/';
+var REGION = 'na/';
+var API_REQ_PARAM = '?api_key=';
+var STATIC = 'static-data/';
+
+var GET_SUMMONER_BY_NAME = 'v1.4/summoner/by-name/';
+var GET_STATS_BY_SUMMONER = 'v1.3/stats/by-summoner/';
+var GET_CHAMPION = 'v1.2/champion/';
+
+
+
+////////////////////////////////////////////////////////////////////////
+////////														////////
+///////////													 ///////////
 ////////////				 	Listeners   	 			////////////
 /////////////											   /////////////
 ////////////////										////////////////
@@ -112,7 +130,7 @@ function getSummonerID(callback){
 	var name = getSummonerName();
 	var summonerID = 'Not Found';
 
-	var API_Response = $.get('https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + name + '?api_key=' + getAPIKey(), function() {
+    var API_Response = $.get(BASE_URL + REGION + GET_SUMMONER_BY_NAME + name + API_REQ_PARAM + getAPIKey(), function() {
 		var data = jQuery.parseJSON(API_Response.responseText);
 		summonerID = data[name].id;
 
@@ -173,7 +191,7 @@ function buildTable(content_array, callback){
 
 // This function fetches the stats of the summoner by submitting that person's summoner name (in-game-name)
 function getSummonerStatsSummary(callback, id){
-	var API_Response = $.get('https://na.api.pvp.net/api/lol/na/v1.3/stats/by-summoner/' + id + '/summary?api_key=' + getAPIKey(), function() {
+    var API_Response = $.get(BASE_URL + REGION + GET_STATS_BY_SUMMONER + id + '/summary' + API_REQ_PARAM + getAPIKey(), function() {
 		var data = jQuery.parseJSON(API_Response.responseText);
 		callback(data);
 	})
@@ -209,7 +227,7 @@ function searchSummonerStatsSummary(){
 
 // This function fetches the stats of the summoner by submitting that person's summoner name (in-game-name)
 function getSummonerStatsRanked(callback, id){
-	var API_Response = $.get('https://na.api.pvp.net/api/lol/na/v1.3/stats/by-summoner/' + id + '/ranked?api_key=' + getAPIKey(), function() {
+    var API_Response = $.get(BASE_URL + REGION + GET_STATS_BY_SUMMONER + id + '/ranked' + API_REQ_PARAM + getAPIKey(), function() {
 		var data = jQuery.parseJSON(API_Response.responseText);
 		callback(data);
 	})
@@ -284,7 +302,7 @@ function insertChampionName(old_text, champ_id){
 
 // This function makes an api call to get static data containing champion names by giving the server a champion ID
 function getChampionName(callback, id){
-	var API_Response = $.get('https://na.api.pvp.net/api/lol/static-data/na/v1.2/champion/' + id + '?api_key=' + getAPIKey(), function() {
+    var API_Response = $.get(BASE_URL + STATIC + REGION + GET_CHAMPION + id + API_REQ_PARAM + getAPIKey(), function() {
 		var data = jQuery.parseJSON(API_Response.responseText);
 		var name = data.name;
 		callback(name);
